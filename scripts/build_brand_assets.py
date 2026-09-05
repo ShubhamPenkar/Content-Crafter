@@ -1,0 +1,161 @@
+import os
+import subprocess
+
+OUT_DIR = "public/brand"
+os.makedirs(OUT_DIR, exist_ok=True)
+
+# 1. Full Canonical SVG with transparent background
+# Exact representation of attached user artwork:
+# 6 overlapping pastel circles, antenna stalks & bulbs on Circle 1,
+# clean bold letter glyphs, gradient underline capsule, tagline CONNECT · CREATE · GROW
+svg_full = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 105 920 435" width="920" height="435" fill="none">
+  <defs>
+    <linearGradient id="jodocoUnderlineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF9B85"/>
+      <stop offset="25%" stop-color="#FFAE9C"/>
+      <stop offset="55%" stop-color="#CBBBF5"/>
+      <stop offset="80%" stop-color="#9EE0DD"/>
+      <stop offset="100%" stop-color="#6EE2CB"/>
+    </linearGradient>
+    <filter id="badgeShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#1A2B48" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <!-- ANTENNAE ON CIRCLE 1 (J) -->
+  <g id="antennae">
+    <!-- Left Antenna -->
+    <path d="M 235 226 C 220 185, 195 160, 182 145" 
+          stroke="#FFC2B4" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <circle cx="178" cy="140" r="18" fill="#FFC2B4"/>
+
+    <!-- Right Antenna -->
+    <path d="M 268 226 C 285 185, 305 160, 318 145" 
+          stroke="#FFC2B4" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <circle cx="322" cy="140" r="18" fill="#FFC2B4"/>
+  </g>
+
+  <!-- 6 OVERLAPPING PASTEL CIRCLES (DRAWN RIGHT-TO-LEFT FOR AUTHENTIC CASSETTE OVERLAP) -->
+  <!-- Circle 6: 'o' (Light Mint / Cyan) -->
+  <g id="circle-6" filter="url(#badgeShadow)">
+    <circle cx="950" cy="310" r="90" fill="#C0EDE5"/>
+    <text x="950" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">o</text>
+  </g>
+
+  <!-- Circle 5: 'c' (Aqua Mint) -->
+  <g id="circle-5" filter="url(#badgeShadow)">
+    <circle cx="810" cy="310" r="90" fill="#A1E9D5"/>
+    <text x="810" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">c</text>
+  </g>
+
+  <!-- Circle 4: 'o' (Lilac) -->
+  <g id="circle-4" filter="url(#badgeShadow)">
+    <circle cx="670" cy="310" r="90" fill="#C8B8F3"/>
+    <text x="670" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">o</text>
+  </g>
+
+  <!-- Circle 3: 'd' (Lavender) -->
+  <g id="circle-3" filter="url(#badgeShadow)">
+    <circle cx="530" cy="310" r="90" fill="#D6CDF7"/>
+    <text x="530" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">d</text>
+  </g>
+
+  <!-- Circle 2: 'o' (Warm Peach / Apricot) -->
+  <g id="circle-2" filter="url(#badgeShadow)">
+    <circle cx="390" cy="310" r="90" fill="#FED3BA"/>
+    <text x="390" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">o</text>
+  </g>
+
+  <!-- Circle 1: 'J' (Peach / Coral) -->
+  <g id="circle-1" filter="url(#badgeShadow)">
+    <circle cx="250" cy="310" r="90" fill="#FFC2B4"/>
+    <text x="250" y="340" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="94" letter-spacing="-0.02em">J</text>
+  </g>
+
+  <!-- GRADIENT UNDERLINE PILL BAR -->
+  <rect x="445" y="442" width="310" height="15" rx="7.5" fill="url(#jodocoUnderlineGrad)"/>
+
+  <!-- TAGLINE: CONNECT · CREATE · GROW -->
+  <text x="600" y="504" text-anchor="middle" fill="#717697" 
+        font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+        font-weight="800" font-size="28" letter-spacing="0.28em">CONNECT &#183; CREATE &#183; GROW</text>
+</svg>
+"""
+
+# 2. Icon Mark SVG (Antennae + J + o caterpillar head)
+svg_mark = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="140 105 360 310" width="360" height="310" fill="none">
+  <defs>
+    <filter id="markShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#1A2B48" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <!-- ANTENNAE ON CIRCLE 1 -->
+  <g id="antennae">
+    <path d="M 235 226 C 220 185, 195 160, 182 145" 
+          stroke="#FFC2B4" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <circle cx="178" cy="140" r="18" fill="#FFC2B4"/>
+
+    <path d="M 268 226 C 285 185, 305 160, 318 145" 
+          stroke="#FFC2B4" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <circle cx="322" cy="140" r="18" fill="#FFC2B4"/>
+  </g>
+
+  <!-- Circle 2: 'o' -->
+  <g id="circle-2" filter="url(#markShadow)">
+    <circle cx="390" cy="310" r="90" fill="#FED3BA"/>
+    <text x="390" y="338" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="88" letter-spacing="-0.02em">o</text>
+  </g>
+
+  <!-- Circle 1: 'J' -->
+  <g id="circle-1" filter="url(#markShadow)">
+    <circle cx="250" cy="310" r="90" fill="#FFC2B4"/>
+    <text x="250" y="340" text-anchor="middle" fill="#111827" 
+          font-family="Liberation Sans, Inter, system-ui, sans-serif" 
+          font-weight="900" font-size="94" letter-spacing="-0.02em">J</text>
+  </g>
+</svg>
+"""
+
+svg_full_path = os.path.join(OUT_DIR, "jodoco_logo_canonical.svg")
+with open(svg_full_path, "w") as f:
+    f.write(svg_full)
+
+svg_mark_path = os.path.join(OUT_DIR, "jodoco_logo_mark.svg")
+with open(svg_mark_path, "w") as f:
+    f.write(svg_mark)
+
+print("Saved SVG files.")
+
+# Render High-Resolution Transparent PNGs with FFmpeg librsvg
+png_full_path = os.path.join(OUT_DIR, "jodoco_logo_canonical.png")
+subprocess.run([
+    "ffmpeg", "-y", "-i", svg_full_path,
+    "-vf", "scale=1840:870",
+    png_full_path
+], check=True)
+
+png_mark_path = os.path.join(OUT_DIR, "jodoco_logo_mark.png")
+subprocess.run([
+    "ffmpeg", "-y", "-i", svg_mark_path,
+    "-vf", "scale=720:620",
+    png_mark_path
+], check=True)
+
+print("Generated PNG assets:")
+print(f" - {png_full_path} ({os.path.getsize(png_full_path)} bytes)")
+print(f" - {png_mark_path} ({os.path.getsize(png_mark_path)} bytes)")

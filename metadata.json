@@ -1,0 +1,6 @@
+{
+  "name": "JodoCo — Creator Marketing Workspace",
+  "description": "Unified creator marketing workspace for authoring AI content, interactive 9:16 Instagram Reels with Veo AI visual generation, 4:5 Carousels, and multi-format campaign exports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
